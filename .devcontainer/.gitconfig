@@ -1,0 +1,34 @@
+[alias]
+        b       = branch
+        bd      = branch -D
+        bl      = branch --list
+        c       = checkout
+        f       = fix
+        go      = rebase --continue
+        hint    = config --global -e
+        history = log --graph --oneline --decorate --all
+        h       = history
+        list    = "!f() { git diff HEAD~..HEAD --stat $1; }; f"
+        l       = list
+        squash  = "!f() { git rebase $1 -i --autosquash; }; f"
+        s       = squash
+        union   = !git reset --soft HEAD~ && git commit --amend --no-edit && git go
+        u       = union
+
+[diff]
+        colorMoved = true
+        colorMovedWS = allow-indentation-change
+[log]
+        time = local
+[merge]
+        conflictStyle = diff3
+[rebase]
+        autosquash = true
+[user]
+        email = andrew.kozin@gmail.com
+        name = Andrew Kozin
+[init]
+        templatedir = ~/.git-templates
+[core]
+        excludesfile = /home/nepalez/.gitignore
+        editor = nano

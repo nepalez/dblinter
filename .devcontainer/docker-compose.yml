@@ -1,0 +1,48 @@
+---
+services:
+  postgres:
+    container_name: dblinter-postgres-${PG_VERSION}
+    env_file: .env
+    environment:
+      PGPASSWORD: postgres
+      POSTGRES_DB_NAME: dblinter_development
+      POSTGRES_PASSWORD: postgres
+      PSQL_HISTFILE: /usr/local/hist/.psql_history
+    image: postgres:${PG_VERSION}-bullseye
+    healthcheck:
+      test: pg_isready -U postgres -h localhost
+      interval: 5s
+    ports:
+      - 5432
+    volumes:
+      - history:/usr/local/hist
+      - postgres:/usr/local/pgsql/data
+  rust:
+    build:
+      args:
+        DISTRO_NAME: bullseye
+        PG_VERSION: ${PG_VERSION}
+        RUST_VERSION: ${RUST_VERSION}
+      context: .
+    container_name: dblinter-rust-${RUST_VERSION}-${PG_VERSION}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    env_file: .env
+    environment:
+      # Service discovery
+      DATABASE_URL: postgres://postgres:postgres@postgres:5432
+    stdin_open: true
+    tmpfs:
+      - /tmp
+      - /app/tmp/pids
+    tty: true
+    volumes:
+      - ..:/app
+      - ./.bashrc:/root/.bashrc:ro
+      - ./.psqlrc:/root/.psqlrc:ro
+      - history:/root/.bash_history
+      - history:/usr/local/hist
+volumes:
+  history:
+  postgres:
