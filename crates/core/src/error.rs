@@ -25,7 +25,7 @@ impl Display for Error {
         match self {
             Self::EstablishConnection(err) => write!(f, "Failed to establish connection: {}", err),
             Self::ExecuteQuery(err) => write!(f, "Failed to execute query: {}", err),
-            Self::ParseConfig(err) => write!(f, "Failed to parse config: {}", err),
+            Self::ParseConfig(err) => write!(f, "Failed to parse JSON: {}", err),
             Self::ParseRow(err) => write!(f, "Failed to parse row: {}", err),
             Self::RenderSql(err) => write!(f, "Failed to render SQL WHERE clause: {}", err),
             Self::RenderTemplate(kind, err) => write!(f, "Failed to render {}: {}", kind, err),

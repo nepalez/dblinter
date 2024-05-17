@@ -16,7 +16,6 @@ impl<P: Problem> Default for Report<P> {
     }
 }
 
-#[allow(dead_code)]
 impl<P: Problem> Report<P> {
     pub fn iter(&self) -> Iter<P> {
         Iter {

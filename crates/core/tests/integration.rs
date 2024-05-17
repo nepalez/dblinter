@@ -132,6 +132,13 @@ mod custom {
     }
 }
 
+#[derive(Debug)]
+pub struct TestLinter {}
+
+impl Linter for TestLinter {
+    type Inspector = custom::TestInspector;
+}
+
 #[test]
 fn test_problem() {
     let problem = custom::ColumnLimitMissed {
