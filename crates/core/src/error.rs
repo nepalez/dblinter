@@ -1,6 +1,7 @@
 use std::error::Error as StdError;
 use std::fmt::{Display, Formatter, Result as FmtResult};
 use std::result::Result as StdResult;
+use tera::Error as TeraError;
 
 use crate::client::{EstablishConnectionError, ExecuteQueryError, ParseRowError};
 use crate::to_sql::Error as ToSqlError;
@@ -13,6 +14,7 @@ pub enum Error {
     ExecuteQuery(ExecuteQueryError),
     ParseRow(ParseRowError),
     RenderSql(ToSqlError),
+    RenderTemplate(&'static str, TeraError),
 }
 
 impl Display for Error {
@@ -22,6 +24,7 @@ impl Display for Error {
             Self::ExecuteQuery(err) => write!(f, "Failed to execute query: {}", err),
             Self::ParseRow(err) => write!(f, "Failed to parse row: {}", err),
             Self::RenderSql(err) => write!(f, "Failed to render SQL WHERE clause: {}", err),
+            Self::RenderTemplate(kind, err) => write!(f, "Failed to render {}: {}", kind, err),
         }
     }
 }
@@ -33,6 +36,7 @@ impl StdError for Error {
             Self::ExecuteQuery(err) => Some(err),
             Self::ParseRow(err) => Some(err),
             Self::RenderSql(err) => Some(err),
+            Self::RenderTemplate(_, err) => Some(err),
         }
     }
 }
@@ -58,5 +62,11 @@ impl From<ExecuteQueryError> for Error {
 impl From<ParseRowError> for Error {
     fn from(err: ParseRowError) -> Self {
         Self::ParseRow(err)
+    }
+}
+
+impl From<(&'static str, TeraError)> for Error {
+    fn from((kind, err): (&'static str, TeraError)) -> Self {
+        Self::RenderTemplate(kind, err)
     }
 }

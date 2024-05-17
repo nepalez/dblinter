@@ -7,23 +7,21 @@ use postgres::{Error as PostgresError, Row as PostgresRow};
 #[allow(unused_imports)]
 use postgres_from_row::FromRow;
 
-#[allow(dead_code)]
 pub trait TryFromRow<Row>
 where
     Self: Sized,
 {
-    fn try_from_row(row: &Row) -> Result<Self, ParseRowError>;
+    fn try_from_row(row: Row) -> Result<Self, ParseRowError>;
 }
 
 #[cfg(feature = "postgres")]
 impl<T: FromRow> TryFromRow<PostgresRow> for T {
-    fn try_from_row(row: &PostgresRow) -> Result<Self, ParseRowError> {
-        <T as FromRow>::try_from_row(row).map_err(ParseRowError::Postgres)
+    fn try_from_row(row: PostgresRow) -> Result<Self, ParseRowError> {
+        <T as FromRow>::try_from_row(&row).map_err(ParseRowError::Postgres)
     }
 }
 
 /// Interface to interact with a database
-#[allow(dead_code)]
 pub trait Client {
     type Row;
     fn query(&mut self, query: &str) -> Result<Vec<Self::Row>, ExecuteQueryError>;
@@ -108,7 +106,6 @@ pub struct PostgresClient {
 }
 
 #[cfg(feature = "postgres")]
-#[allow(dead_code)]
 impl PostgresClient {
     pub fn connect(url: &str) -> Result<Self, EstablishConnectionError> {
         postgres::Client::connect(url, postgres::NoTls)
