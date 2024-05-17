@@ -1,6 +1,7 @@
 mod client;
 mod error;
 mod problem;
+mod report;
 mod to_sql;
 
 #[cfg(feature = "postgres")]
