@@ -14,4 +14,5 @@ postgres = { workspace = true, optional = true }
 postgres-from-row = { workspace = true, optional = true }
 regex = { workspace = true }
 serde = { workspace = true, features = ["derive"] }
+serde_json = { workspace = true }
 tera = { workspace = true }

@@ -182,6 +182,7 @@ dependencies = [
  "postgres-from-row",
  "regex",
  "serde",
+ "serde_json",
  "tera",
 ]
 

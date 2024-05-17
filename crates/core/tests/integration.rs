@@ -48,7 +48,6 @@ mod custom {
 
     #[derive(Debug)]
     pub enum TestProblem {
-        #[allow(dead_code)]
         ColumnLimitMissed(ColumnLimitMissed),
     }
     impl Problem for TestProblem {
@@ -72,6 +71,62 @@ mod custom {
         fn rollback(&self) -> Option<Result<String>> {
             match self {
                 Self::ColumnLimitMissed(p) => p.rollback(),
+            }
+        }
+    }
+
+    #[derive(Debug, Deserialize, Serialize)]
+    pub struct ColumnLimitMissedFilter {
+        scope_name: String,
+        table_name: String,
+    }
+    #[derive(Debug, Deserialize, Serialize)]
+    pub struct ColumnLimitMissedInspector {
+        limit: i32,
+        only: Option<Vec<ColumnLimitMissedFilter>>,
+        except: Option<Vec<ColumnLimitMissedFilter>>,
+    }
+    impl From<&ColumnLimitMissedInspector> for Context {
+        fn from(value: &ColumnLimitMissedInspector) -> Self {
+            let mut context = Self::new();
+            context.insert("limit", &value.limit);
+            context
+        }
+    }
+    impl CustomInspector for ColumnLimitMissedInspector {
+        type Problem = ColumnLimitMissed;
+
+        fn query_() -> &'static str {
+            "SELECT * FROM table WHERE limit = {{ limit }};"
+        }
+    }
+
+    #[derive(Debug)]
+    pub enum TestInspector {
+        ColumnLimitMissed(ColumnLimitMissedInspector),
+    }
+    impl Inspector for TestInspector {
+        type Problem = TestProblem;
+
+        fn build(key: &str, value: &str) -> Result<Self> {
+            match key {
+                "ColumnLimitMissed" => Ok(Self::ColumnLimitMissed(
+                    ColumnLimitMissedInspector::build(key, value)?,
+                )),
+                _ => Err(key.to_string().into()),
+            }
+        }
+        fn query(&self) -> Result<String> {
+            match self {
+                Self::ColumnLimitMissed(i) => i.query(),
+            }
+        }
+        fn parse(
+            &self,
+            row: <<Self::Problem as Problem>::Client as Client>::Row,
+        ) -> Result<Self::Problem> {
+            match self {
+                Self::ColumnLimitMissed(i) => i.parse(row).map(TestProblem::ColumnLimitMissed),
             }
         }
     }

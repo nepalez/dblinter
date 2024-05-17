@@ -4,7 +4,6 @@ use std::error::Error as StdError;
 use std::fmt::{Debug, Display, Formatter, Result as FmtResult};
 
 /// Sealed trait to deserialize struct into SQL WHERE condition.
-#[allow(dead_code)]
 pub(crate) trait ToSql: Serialize {
     fn to_sql(&self) -> crate::error::Result<String> {
         let mut serializer = WhereSerializer::new();
