@@ -11,6 +11,8 @@ authors = ["Andrew Kozin"]
 license = "MIT"
 
 [workspace.dependencies]
+postgres = "^0.19.7"
+postgres-from-row = "^0.5.2"
 regex = "^1.10"
 serde = "^1.0"
 tera = "^1.19"

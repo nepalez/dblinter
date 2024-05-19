@@ -5,7 +5,13 @@ edition.workspace = true
 authors.workspace = true
 license.workspace = true
 
+[features]
+default = ["postgres"]
+postgres = ["dep:postgres", "dep:postgres-from-row"]
+
 [dependencies]
+postgres = { workspace = true, optional = true }
+postgres-from-row = { workspace = true, optional = true }
 regex = { workspace = true }
 serde = { workspace = true, features = ["derive"] }
 tera = { workspace = true }
