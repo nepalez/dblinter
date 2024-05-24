@@ -11,6 +11,7 @@ authors = ["Andrew Kozin"]
 license = "MIT"
 
 [workspace.dependencies]
+convert_case = "^0.6.0"
 inventory = "^0.3.15"
 postgres = "^0.19.7"
 postgres-from-row = "^0.5.2"

@@ -1,12 +1,15 @@
 [package]
 name = "macros"
-version = "0.1.0"
-edition = "2021"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
 
 [features]
 default = ["linter"]
 linter = []
-problem = []
+problem = ["dep:macros_problem"]
 
 [dependencies]
 macros_core = { path = "../macros_core" }
+macros_problem = { path = "../macros_problem", optional = true }

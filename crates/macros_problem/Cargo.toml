@@ -1,0 +1,20 @@
+[package]
+name = "macros_problem"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+
+[lib]
+proc-macro = true
+
+[dependencies]
+convert_case = { workspace = true }
+macros_core = { path = "../macros_core" }
+proc-macro2 = { workspace = true }
+quote = { workspace = true }
+syn = { workspace = true, features = ["full", "parsing"] }
+regex = { workspace = true }
+
+[dev-dependencies]
+macros_fixture = { path = "../macros_fixture", features = ["problem"] }
