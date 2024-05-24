@@ -1,0 +1,12 @@
+[package]
+name = "macros"
+version = "0.1.0"
+edition = "2021"
+
+[features]
+default = ["linter"]
+linter = []
+problem = []
+
+[dependencies]
+macros_core = { path = "../macros_core" }

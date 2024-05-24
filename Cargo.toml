@@ -11,11 +11,15 @@ authors = ["Andrew Kozin"]
 license = "MIT"
 
 [workspace.dependencies]
+inventory = "^0.3.15"
 postgres = "^0.19.7"
 postgres-from-row = "^0.5.2"
+proc-macro2 = "^1.0"
+quote = "^1.0"
 regex = "^1.10"
 serde = "^1.0"
 serde_json = "^1.0"
+syn = "^2.0"
 tera = "^1.19"
 
 [workspace.lints.rust]
