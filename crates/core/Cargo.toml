@@ -6,3 +6,6 @@ authors.workspace = true
 license.workspace = true
 
 [dependencies]
+regex = { workspace = true }
+serde = { workspace = true, features = ["derive"] }
+tera = { workspace = true }

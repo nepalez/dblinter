@@ -11,5 +11,8 @@ authors = ["Andrew Kozin"]
 license = "MIT"
 
 [workspace.dependencies]
+regex = "^1.10"
+serde = "^1.0"
+tera = "^1.19"
 
 [workspace.lints.rust]
